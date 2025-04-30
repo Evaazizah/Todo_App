@@ -77,10 +77,19 @@ class _TodoPageState extends State<TodoPage> {
     Widget build(BuildContext context) {
         return Scaffold(
             appBar: AppBar(
-                title: Text('Todo List'),
+                title: Text('📋Daftar Tugas Harian'),
+                centerTitle: true,
             ),
             body: Column(
                 children: [
+                    SizedBox(height: 12),
+                    Text(
+                        '✨ Tetap semangat! Selesaikan tugas-tugasmu! 💪',
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                        ),
+                    ),
                     Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TextField(
