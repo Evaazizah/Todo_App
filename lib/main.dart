@@ -96,12 +96,26 @@ class _TodoPageState extends State<TodoPage> {
                             controller: _controller,
                             decoration: InputDecoration(
                                 labelText: '✍️ Tambahkan tugas baru',
-                                border: OutlineInputBorder(),
+                                border: OutlineInputBorder(
+                                    bordeRadius: BorderRadius.circular(12.0),
+                                ),
+                                suffixIcon: IconButton(
+                                    icon: Icon(Icons.add_circle, color: Colors.teal),
+                                    onPressed: _addTodo,
+                                ),
                             ),
                         ),
                     ),
                     Expanded(
-                        child: ListView.builder(
+                        child: _todos.isEmpty
+                            ? Center(
+                                child: Text(
+                                    '📅 Tidak ada tugas saat ini!',
+                                    style: TextStyle(fontSize: 18),
+                                ),
+                            )
+                            : _buildTodoList(),
+                        ListView.builder(
                             itemCount: _todos.length,
                             itemBuilder: (context, index) {
                                 return ListTile(
