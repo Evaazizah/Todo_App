@@ -45,3 +45,33 @@ class _TodoPageState extends State<TodoPage> {
     }
   }
 }
+    
+    void _saveTodos() async {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        String todosString = json.encode(_todos);
+        prefs.setString('todos', todosString);
+    }
+    
+    void _addTodo() {
+        if (_controller.text.isNotEmpty) {
+        setState(() {
+            _todos.add({'title': _controller.text, 'completed': false});
+            _controller.clear();
+        });
+        _saveTodos();
+        }
+    }
+
+    void _toggleTodo(int index) {
+        setState(() {
+        _todos[index]['completed'] = !_todos[index]['completed'];
+        });
+        _saveTodos();
+    }
+
+    void _deleteTodo(int index) {
+        setState(() {
+        _todos.removeAt(index);
+        });
+        _saveTodos();
+    }
