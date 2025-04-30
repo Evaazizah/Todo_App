@@ -110,33 +110,43 @@ class _TodoPageState extends State<TodoPage> {
                         child: _todos.isEmpty
                             ? Center(
                                 child: Text(
-                                    '📅 Tidak ada tugas saat ini!',
-                                    style: TextStyle(fontSize: 18),
+                                    '📅 Tidak ada tugas saat ini!😎',
+                                    style: TextStyle(fontSize: 18, fontStyle: FontStyle.italic),
                                 ),
                             )
-                            : _buildTodoList(),
-                        ListView.builder(
+                        : ListView.builder(
                             itemCount: _todos.length,
                             itemBuilder: (context, index) {
-                                return ListTile(
-                                    title: Text(_todos[index]['task']),
-                                    trailing: IconButton(
-                                        icon: Icon(Icons.delete),
-                                        onPressed: () => _deleteTodo(index),
+                                return Card(
+                                    margin: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(12.0),
                                     ),
-                                    leading: Checkbox(
-                                        value: _todos[index]['done'],
-                                        onChanged: (value) => _toggleTodo(index),
-                                    ),
+                                    elevation: 2,
+                                    child: ListTile(
+                                        title: Text(
+                                            _todos[index]['task'],
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                decoration: _todos[index]['done']
+                                                    ? TextDecoration.lineThrough
+                                                    : null,
+                                            ),
+                                        ),
+                                        leading: Checkbox(
+                                            value: _todos[index]['done'],
+                                            onChanged: (value) => _toggleTodo(index),
+                                        ),
+                                        trailing: IconButton(
+                                            icon: Icon(Icons.delete, color: Colors.red),
+                                            onPressed: () => _deleteTodo(index),
+                                        ),
                                 );
                             },
                         ),
                     ),
                 ],
             ),
-            floatingActionButton: FloatingActionButton(
-                onPressed: _addTodo,
-                child: Icon(Icons.add),
             ),
         );
     }
