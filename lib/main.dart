@@ -18,3 +18,30 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+class TodoPage extends StatefulWidget {
+  @override
+  _TodoPageState createState() => _TodoPageState();
+}
+
+class _TodoPageState extends State<TodoPage> {
+  List<Map<String, dynamic>> _todos = [];
+  TextEditingController _controller = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadTodos();
+  }
+
+  void _loadTodos() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? todosString = prefs.getString('todos');
+    if (todosString != null) {
+      List<dynamic> todosJson = json.decode(todosString);
+      setState(() {
+        _todos = List<Map<String, dynamic>>.from(json.decode(todosString));
+      });
+    }
+  }
+}
