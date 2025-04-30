@@ -108,45 +108,52 @@ class _TodoPageState extends State<TodoPage> {
                     ),
                     Expanded(
                         child: _todos.isEmpty
-                            ? Center(
-                                child: Text(
-                                    '📅 Tidak ada tugas saat ini!😎',
-                                    style: TextStyle(fontSize: 18, fontStyle: FontStyle.italic),
-                                ),
-                            )
-                        : ListView.builder(
-                            itemCount: _todos.length,
-                            itemBuilder: (context, index) {
-                                return Card(
-                                    margin: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(12.0),
+                                ? Center(
+                                        child: Text(
+                                            '📅 Tidak ada tugas saat ini!😎',
+                                            style: TextStyle(fontSize: 18, fontStyle: FontStyle.italic),
+                                        ),
+                                    )
+                                : ListView.builder(
+                                        itemCount: _todos.length,
+                                        itemBuilder: (context, index) {
+                                            return Card(
+                                                margin: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.circular(12.0),
+                                                ),
+                                                elevation: 2,
+                                                child: ListTile(
+                                                    title: Text(
+                                                        _todos[index]['task'],
+                                                        style: TextStyle(
+                                                            fontSize: 16,
+                                                            decoration: _todos[index]['done']
+                                                                    ? TextDecoration.lineThrough
+                                                                    : TextDecoration.none,
+                                                        ),
+                                                    ),
+                                                    leading: IconButton(
+                                                        icon: Icon(
+                                                            _todos[index]['done']
+                                                                    ? Icons.check_circle
+                                                                    : Icons.radion_button_unchecked,
+                                                            color: _todos[index]['done'] ? Colors.green : Colors.grey,
+                                                        ),
+                                                        onPressed: () => _toggleTodo(index),
+                                                    ),
+                                                    trailing: IconButton(
+                                                        icon: Icon(Icons.delete_forever, color: Colors.red),
+                                                        onPressed: () => _deleteTodo(index),
+                                                    ),
+                                                ),
+                                            );
+                                        },
+                        
                                     ),
-                                    elevation: 2,
-                                    child: ListTile(
-                                        title: Text(
-                                            _todos[index]['task'],
-                                            style: TextStyle(
-                                                fontSize: 18,
-                                                decoration: _todos[index]['done']
-                                                    ? TextDecoration.lineThrough
-                                                    : null,
-                                            ),
-                                        ),
-                                        leading: Checkbox(
-                                            value: _todos[index]['done'],
-                                            onChanged: (value) => _toggleTodo(index),
-                                        ),
-                                        trailing: IconButton(
-                                            icon: Icon(Icons.delete, color: Colors.red),
-                                            onPressed: () => _deleteTodo(index),
-                                        ),
-                                );
-                            },
-                        ),
                     ),
                 ],
-            ),
+            
             ),
         );
     }
