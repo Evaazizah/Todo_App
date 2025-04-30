@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
 void main() {
@@ -12,9 +13,9 @@ class MyApp extends StatelessWidget {
       title: 'Todo List',
       theme: ThemeData(
         primarySwatch: Colors.teal,
-        scaffoldBackgroundColor: Color(#A8E6CF)
+        scaffoldBackgroundColor: Color(0xFFF1F8E9)
       ),
-      home: MyHomePage(),
+      home: TodoPage(),
     );
   }
 }
@@ -38,7 +39,6 @@ class _TodoPageState extends State<TodoPage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? todosString = prefs.getString('todos');
     if (todosString != null) {
-      List<dynamic> todosJson = json.decode(todosString);
       setState(() {
         _todos = List<Map<String, dynamic>>.from(json.decode(todosString));
       });
@@ -97,7 +97,7 @@ class _TodoPageState extends State<TodoPage> {
                             decoration: InputDecoration(
                                 labelText: '✍️ Tambahkan tugas baru',
                                 border: OutlineInputBorder(
-                                    bordeRadius: BorderRadius.circular(12.0),
+                                    borderRadius: BorderRadius.circular(12),
                                 ),
                                 suffixIcon: IconButton(
                                     icon: Icon(Icons.add_circle, color: Colors.teal),
@@ -137,7 +137,7 @@ class _TodoPageState extends State<TodoPage> {
                                                         icon: Icon(
                                                             _todos[index]['done']
                                                                     ? Icons.check_circle
-                                                                    : Icons.radion_button_unchecked,
+                                                                    : Icons.radio_button_unchecked,
                                                             color: _todos[index]['done'] ? Colors.green : Colors.grey,
                                                         ),
                                                         onPressed: () => _toggleTodo(index),
