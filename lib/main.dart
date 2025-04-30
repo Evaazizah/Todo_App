@@ -72,4 +72,49 @@ class _TodoPageState extends State<TodoPage> {
         });
         _saveTodos();
     }
+
+    @override
+    Widget build(BuildContext context) {
+        return Scaffold(
+            appBar: AppBar(
+                title: Text('Todo List'),
+            ),
+            body: Column(
+                children: [
+                    Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextField(
+                            controller: _controller,
+                            decoration: InputDecoration(
+                                labelText: 'Add a new task',
+                                border: OutlineInputBorder(),
+                            ),
+                        ),
+                    ),
+                    Expanded(
+                        child: ListView.builder(
+                            itemCount: _todos.length,
+                            itemBuilder: (context, index) {
+                                return ListTile(
+                                    title: Text(_todos[index]['task']),
+                                    trailing: IconButton(
+                                        icon: Icon(Icons.delete),
+                                        onPressed: () => _deleteTodo(index),
+                                    ),
+                                    leading: Checkbox(
+                                        value: _todos[index]['done'],
+                                        onChanged: (value) => _toggleTodo(index),
+                                    ),
+                                );
+                            },
+                        ),
+                    ),
+                ],
+            ),
+            floatingActionButton: FloatingActionButton(
+                onPressed: _addTodo,
+                child: Icon(Icons.add),
+            ),
+        );
+    }
 }
