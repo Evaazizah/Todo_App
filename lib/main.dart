@@ -61,7 +61,7 @@ class _TodoPageState extends State<TodoPage> {
 
     void _toggleTodo(int index) {
         setState(() {
-        _todos[index]['completed'] = !_todos[index]['completed'];
+        _todos[index]['done'] = !_todos[index]['done'];
         });
         _saveTodos();
     }
