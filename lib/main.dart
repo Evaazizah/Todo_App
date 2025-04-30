@@ -44,22 +44,19 @@ class _TodoPageState extends State<TodoPage> {
       });
     }
   }
-}
     
     void _saveTodos() async {
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        String todosString = json.encode(_todos);
-        prefs.setString('todos', todosString);
+        prefs.setString('todos', json.encode(_todos));
     }
     
     void _addTodo() {
-        if (_controller.text.isNotEmpty) {
+        if (_controller.text.isEmpty) return;
         setState(() {
-            _todos.add({'title': _controller.text, 'completed': false});
+            _todos.add({'task': _controller.text, 'done': false});
             _controller.clear();
         });
         _saveTodos();
-        }
     }
 
     void _toggleTodo(int index) {
@@ -75,3 +72,4 @@ class _TodoPageState extends State<TodoPage> {
         });
         _saveTodos();
     }
+}
