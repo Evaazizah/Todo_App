@@ -91,11 +91,11 @@ class _TodoPageState extends State<TodoPage> {
                         ),
                     ),
                     Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(12.0),
                         child: TextField(
                             controller: _controller,
                             decoration: InputDecoration(
-                                labelText: 'Add a new task',
+                                labelText: '✍️ Tambahkan tugas baru',
                                 border: OutlineInputBorder(),
                             ),
                         ),
