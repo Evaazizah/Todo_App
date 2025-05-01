@@ -121,12 +121,30 @@ class _TodoPageState extends State<TodoPage> {
         return _todos;
     }
 
+    void _setFilter(String value) {
+        setState(() {
+            _filter = value;
+        });
+    }
+
     @override
     Widget build(BuildContext context) {
+        final todos = _filteredTodos;
+
         return Scaffold(
             appBar: AppBar(
                 title: Text('📋Daftar Tugas Harian'),
                 centerTitle: true,
+                actions: [
+                    PopupMenuButton<String>(
+                        onSelected: _setFilter,
+                        itemBuilder: (context) => [
+                            PopupMenuItem(value: 'all', child: Text('Semua Tugas')),
+                            PopupMenuItem(value: 'done', child: Text('Tugas Selesai')),
+                            PopupMenuItem(value: 'not_done', child: Text('Tugas Belum Selesai')),
+                        ],
+                    ),
+                ],
             ),
             body: Column(
                 children: [
@@ -155,7 +173,7 @@ class _TodoPageState extends State<TodoPage> {
                         ),
                     ),
                     Expanded(
-                        child: _todos.isEmpty
+                        child: todos.isEmpty
                                 ? Center(
                                         child: Text(
                                             '📅 Tidak ada tugas saat ini!😎',
@@ -163,8 +181,14 @@ class _TodoPageState extends State<TodoPage> {
                                         ),
                                     )
                                 : ListView.builder(
-                                        itemCount: _todos.length,
+                                        itemCount: todos.length,
                                         itemBuilder: (context, index) {
+                                            final todo = todos[index];
+                                            final realIndex = _todos.indexOf(todo);
+
+                                            final deadline = DateTime.tryParse(todo['deadline'] ?? '');
+                                            final isExpired = deadline != null && DateTime.now().isAfter(deadline);
+                                            
                                             return Card(
                                                 margin: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                                                 shape: RoundedRectangleBorder(
@@ -172,6 +196,29 @@ class _TodoPageState extends State<TodoPage> {
                                                 ),
                                                 elevation: 2,
                                                 child: ListTile(
+                                                    title: Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        children: [
+                                                            Text(
+                                                                todo['task'],
+                                                                style: TextStyle(
+                                                                    fontSize: 16,
+                                                                    decoration: todo['done'] || isExpired)
+                                                                            ? TextDecoration.lineThrough 
+                                                                            : null,
+                                                                    color: isExpired ? Colors.grey : null,
+                                                                ),
+                                                            ),
+                                                            if (deadline != null)
+                                                                Text(
+                                                                    'Batas Waktu: ${deadline.day}/${deadline.month}/${deadline.year} ${deadline.hour}:${deadline.minute}',
+                                                                    style: TextStyle(
+                                                                        color: isExpired ? Colors.red : Colors.black54,
+                                                                        fontSize: 12,
+                                                                    ),
+                                                                ),
+                                                        ],
+                                                    ),
                                                     title: Text(
                                                         _todos[index]['task'],
                                                         style: TextStyle(
