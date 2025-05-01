@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
-import 'package:provifer/provider.dart';
 
 void main() {
-  runApp((
-    create: (_) => TodoProvider()..loadTodos(),
-    child: MyApp(),
-  ));
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -31,6 +27,7 @@ class TodoPage extends StatefulWidget {
 
 class _TodoPageState extends State<TodoPage> {
   List<Map<String, dynamic>> _todos = [];
+  String _filter = 'all';
   TextEditingController _controller = TextEditingController();
 
   @override
