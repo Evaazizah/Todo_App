@@ -112,6 +112,15 @@ class _TodoPageState extends State<TodoPage> {
         _saveTodos();
     }
 
+    List<Map<String, dynamic>> get _filteredTodos {
+        if (_filter == 'done') {
+            return _todos.where((todo) => todo['done']).toList();
+        } else if (_filter == 'not_done') {
+            return _todos.where((todo) => !todo['done']).toList();
+        }
+        return _todos;
+    }
+
     @override
     Widget build(BuildContext context) {
         return Scaffold(
