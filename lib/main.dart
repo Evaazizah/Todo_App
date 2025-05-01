@@ -59,8 +59,33 @@ class _TodoPageState extends State<TodoPage> {
     
     void _addTodo() {
         if (_controller.text.isEmpty) return;
+
+        final selectedDate = await showDatePicker(
+            context: context,
+            initialDate: DateTime.now(),
+            firstDate: DateTime.now(),
+            lastDate: DateTime(2100),
+        );
+
+        if (selectedDate == null) return;
+
+        final selectedTime = await showTimePicker(
+            context: context,
+            initialTime: TimeOfDay.now(),
+        );
+
+        if (selectedTime == null) return;
+
+        final deadline = DateTime(
+            selectedDate.year,
+            selectedDate.month,
+            selectedDate.day,
+            selectedTime.hour,
+            selectedTime.minute,
+        );
+
         setState(() {
-            _todos.add({'task': _controller.text, 'done': false});
+            _todos.add({'task': _controller.text, 'done': false, 'deadline': deadline.toIso8601String()});
             _controller.clear();
         });
         _saveTodos();
@@ -69,6 +94,13 @@ class _TodoPageState extends State<TodoPage> {
     void _toggleTodo(int index) {
         setState(() {
         _todos[index]['done'] = !_todos[index]['done'];
+        });
+        _saveTodos();
+    }
+
+    void _editTodo(int index, String newTask) {
+        setState(() {
+        _todos[index]['task'] = newTask;
         });
         _saveTodos();
     }
