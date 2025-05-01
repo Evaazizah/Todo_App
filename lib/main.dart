@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
+import 'package:provifer/provider.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp((
+    create: (_) => TodoProvider()..loadTodos(),
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
