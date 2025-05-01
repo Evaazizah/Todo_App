@@ -41,7 +41,13 @@ class _TodoPageState extends State<TodoPage> {
     String? todosString = prefs.getString('todos');
     if (todosString != null) {
       setState(() {
-        _todos = List<Map<String, dynamic>>.from(json.decode(todosString));
+        _todos = List<Map<String, dynamic>>.from(json.decode(todosString)).map((todo) {
+          return {
+            'task': todo['task'],
+            'done': todo['done'],
+            'deadline': todo['deadline'] ?? DateTime.now().toIso8601String(),
+          };
+        }).toList();
       });
     }
   }
