@@ -33,13 +33,13 @@ class TodoList extends StatelessWidget {
                 decoration: (todo['done'] || isPastDeadline)
                     ? TextDecoration.lineThrough
                     : null,
-                color: Colors.black,
+                color: Theme.of(context).textTheme.bodyMedium?.color,
               ),
             ),
             subtitle: Text(
               '📅 Deadline: $formattedDeadline',
               style: TextStyle(
-                color: isPastDeadline ? Colors.red : Colors.black, 
+                color: isPastDeadline ? Colors.red : Theme.of(context).textTheme.bodySmall?.color, 
               ),
             ),
             leading: IconButton(

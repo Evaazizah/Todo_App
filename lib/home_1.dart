@@ -165,6 +165,12 @@ class _TodoPageState extends State<TodoPage> {
                         });
                     },
                 ),
+                IconButton(
+                    icon: Icon(widget.isDarkMode ? Icons.light_mode : Icons.dark_mode),
+                    onPressed: () {
+                        widget.onToggleTheme(!widget.isDarkMode);
+                    },
+                ),
                 PopupMenuButton<String>(
                     onSelected: _setFilter,
                     itemBuilder: (context) => [
