@@ -4,6 +4,11 @@ import 'dart:convert';
 import 'home_2.dart';
 
 class TodoPage extends StatefulWidget {
+    final Function(bool) onToggleTheme;
+    final bool isDarkMode;
+
+    cons TodoPage({required this.onToggleTheme, required this.isDarkMode});
+
   @override
   _TodoPageState createState() => _TodoPageState();
 }
@@ -11,7 +16,9 @@ class TodoPage extends StatefulWidget {
 class _TodoPageState extends State<TodoPage> {
   List<Map<String, dynamic>> _todos = [];
   String _filter = 'all';
-  TextEditingController _controller = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
+  final TextEditingController _controller = TextEditingController();
+  bool _isDarkMode = false;
 
   @override
   void initState() {
@@ -100,18 +107,32 @@ class _TodoPageState extends State<TodoPage> {
   }
   
   List<Map<String, dynamic>> get _filteredTodos {
+    List<Map<String, dynamic>> filtered = _todos;
+
     if (_filter == 'done') {
-        return _todos.where((todo) => todo['done']).toList();
+        filtered = filtered.where((todo) => todo['done']).toList();
     } else if (_filter == 'not_done') {
-        return _todos.where((todo) => !todo['done']).toList();
+        filtered = filtered.where((todo) => !todo['done']).toList();
     }
-    return _todos;
+
+    if (_searchController.text.isNotEmpty) {
+        filtered = filtered.where((todo) => 
+            todo['task'].toLowerCase().contains(_searchController.text.toLowerCase())).toList();
+    }
+    return filtered;
   }
   
   void _setFilter(String value) {
     setState(() {
         _filter = value;
     });
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    _controller.dispose();
+    super.dispose();
   }
   
   @override
@@ -120,9 +141,31 @@ class _TodoPageState extends State<TodoPage> {
 
     return Scaffold(
         appBar: AppBar(
+            title: _showSearchBar
+                ? TextField(
+                    controller: _searchController,
+                    autofocus: true,
+                    decoration: InputDecoration(
+                        hintText: '🔍 Cari Tugas',
+                        border: InputBorder.none,
+                    ),
+                    onChanged: (value) {
+                        setState(() {});
+                    },
+                )
+                : Text('Todo List'),
             title: Text('📋Daftar Tugas Harian'),
             centerTitle: true,
             actions: [
+                IconButton(
+                    icon: Icon(_showSearchBar ? Icons.close : Icons.search),
+                    onPressed: () {
+                        setState(() {
+                            _showSearchBar = !_showSearchBar;
+                            if (!_showSearchBar) _searchController.clear();
+                        });
+                    },
+                ),
                 PopupMenuButton<String>(
                     onSelected: _setFilter,
                     itemBuilder: (context) => [
@@ -142,6 +185,15 @@ class _TodoPageState extends State<TodoPage> {
                 ),
                 Padding(
                     padding: const EdgeInsets.all(12.0),
+                    child: Row(
+                        children: [
+                            controller: _searchController,
+                            decoration: InputDecoration(
+                                hintText: '🔍 Cari Tugas',
+                                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                            ),
+                        ]
+                    ),
                     child: TextField(
                         controller: _controller,
                         decoration: InputDecoration(
