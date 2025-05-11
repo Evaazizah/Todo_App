@@ -7,15 +7,31 @@ void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   @override
-  StatefulWidget createState() => _MyAppState();
+  State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
     ThemeMode _themeMode = ThemeMode.light;
-  void _toggleTheme() {}
+
+  void _toggleTheme(bool isDark) async{
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _themeMode = isDark ? ThemeMode.dark : ThemeMode.light;
+    });
+    await prefs.setBool('isDark', isDark);
+  }
+
+  Future<void> _loadTheme() async {
+    final prefs = await SharedPreferences.getInstance();
+    final isDark = prefs.getBool('isDark') ?? false;
+    setState(() {
+      _themeMode = isDark ? ThemeMode.dark : ThemeMode.light;
+    });
+  }
   
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -24,7 +40,10 @@ class _MyAppState extends State<MyApp> {
         primarySwatch: Colors.teal,
         scaffoldBackgroundColor: Color(0xFFF1F8E9)
       ),
-      home: TodoPage(),
+      home: TodoPage(
+        onToggleTheme: _toggleTheme,
+        isDarkMode: _themeMode == themeMode.dark,
+      ),
     );
   }
 }
