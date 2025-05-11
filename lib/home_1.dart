@@ -7,7 +7,7 @@ class TodoPage extends StatefulWidget {
     final Function(bool) onToggleTheme;
     final bool isDarkMode;
 
-    cons TodoPage({required this.onToggleTheme, required this.isDarkMode});
+    TodoPage({required this.onToggleTheme, required this.isDarkMode});
 
   @override
   _TodoPageState createState() => _TodoPageState();
@@ -18,7 +18,7 @@ class _TodoPageState extends State<TodoPage> {
   String _filter = 'all';
   final TextEditingController _searchController = TextEditingController();
   final TextEditingController _controller = TextEditingController();
-  bool _isDarkMode = false;
+  bool _showSearchBar = false;
 
   @override
   void initState() {
@@ -153,8 +153,7 @@ class _TodoPageState extends State<TodoPage> {
                         setState(() {});
                     },
                 )
-                : Text('Todo List'),
-            title: Text('📋Daftar Tugas Harian'),
+                : Text('📋Daftar Tugas Harian'),
             centerTitle: true,
             actions: [
                 IconButton(
@@ -187,23 +186,20 @@ class _TodoPageState extends State<TodoPage> {
                     padding: const EdgeInsets.all(12.0),
                     child: Row(
                         children: [
-                            controller: _searchController,
-                            decoration: InputDecoration(
-                                hintText: '🔍 Cari Tugas',
-                                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                            Expanded(
+                                child: TextField(
+                                    controller: _controller,
+                                    decoration: InputDecoration(
+                                        labelText: '✍️ Tambahkan tugas baru',
+                                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                                        suffixIcon: IconButton(
+                                            icon: Icon(Icons.add_circle, color: Colors.teal),
+                                            onPressed: _addTodo,
+                                        ),
+                                    ),
+                                ),
                             ),
-                        ]
-                    ),
-                    child: TextField(
-                        controller: _controller,
-                        decoration: InputDecoration(
-                            labelText: '✍️ Tambahkan tugas baru',
-                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-                            suffixIcon: IconButton(
-                                icon: Icon(Icons.add_circle, color: Colors.teal),
-                                onPressed: _addTodo,
-                            ),
-                        ),
+                        ],
                     ),
                 ),
                 Expanded(

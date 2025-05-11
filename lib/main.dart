@@ -8,7 +8,6 @@ void main() {
 }
 
 class MyApp extends StatefulWidget {
-    cons MyApp({super.key});
   @override
   State<MyApp> createState() => _MyAppState();
 }
@@ -16,10 +15,9 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
     ThemeMode _themeMode = ThemeMode.light;
 
-  void _toggleTheme() {
+  void _toggleTheme(bool isDark) {
     setState(() {
-      _themeMode = _themeMode == ThemeMode.light;
-      ? ThemeMode.dark : ThemeMode.light;
+      _themeMode = isDark ? ThemeMode.dark : ThemeMode.light;
     });
   }
 
@@ -29,15 +27,17 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
       title: 'Todo List',
       theme: ThemeData(
+        fontFamily: 'Roboto',
         primarySwatch: Colors.teal,
         scaffoldBackgroundColor: Color(0xFFF1F8E9)
       ),
       darkTheme: ThemeData(
+        fontFamily: 'Roboto',
         brightness: Brightness.dark,
         primarySwatch: Colors.teal,
         useMaterial3: true,
       ),
-      _themeMode: _themeMode,
+      themeMode: _themeMode,
       home: TodoPage(
         onToggleTheme: _toggleTheme,
         isDarkMode: _themeMode == ThemeMode.dark,
