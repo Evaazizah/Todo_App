@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart'; // Untuk format tanggal
+import 'package:intl/intl.dart';
 
 class TodoList extends StatelessWidget {
   final List<Map<String, dynamic>> todos;
@@ -33,13 +33,13 @@ class TodoList extends StatelessWidget {
                 decoration: (todo['done'] || isPastDeadline)
                     ? TextDecoration.lineThrough
                     : null,
-                color: Colors.black, // Tetap hitam walau coret
+                color: Colors.black,
               ),
             ),
             subtitle: Text(
               '📅 Deadline: $formattedDeadline',
               style: TextStyle(
-                color: isPastDeadline ? Colors.red : Colors.black, // Hanya deadline yg merah
+                color: isPastDeadline ? Colors.red : Colors.black, 
               ),
             ),
             leading: IconButton(

@@ -9,6 +9,13 @@ void main() {
 
 class MyApp extends StatelessWidget {
   @override
+  StatefulWidget createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+    ThemeMode _themeMode = ThemeMode.light;
+  void _toggleTheme() {}
+  
   Widget build(BuildContext context) {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
