@@ -106,6 +106,18 @@ class TodoList extends StatelessWidget {
                 ),
               ],
             ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => TaskDetailPage(
+                    task: todo['task'],
+                    deadline: todo['deadline'],
+                    done: todo['done'],
+                  ),
+                ),
+              );
+            }
           ),
         );
       },

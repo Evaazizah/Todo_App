@@ -17,7 +17,7 @@ class TaskDetailPage extends StatelessWidget {
     final formattedDeadline = DateFormat('dd-MM-yyyy HH:mm').format(DateTime.parse(deadline));
 
     return Scaffold(
-      appBar: AppBar(title: Text('Task Details')),
+      appBar: AppBar(title: Text('Detail Penugasan')),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
